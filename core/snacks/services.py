@@ -1,2 +1,3 @@
-def foo():
-    return 19
+
+def buy_snack(snack, cash_amount):
+    return True
