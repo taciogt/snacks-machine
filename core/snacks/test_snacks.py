@@ -1,11 +1,22 @@
-import unittest
-from core.snacks.services import buy_snack
+from unittest import TestCase
+from core.snacks.services import can_buy_snack
 from core.snacks.entities import Snack
 from core.currency.entities import Cash, CashAmount
+from core.currency.exceptions import InsufficientCashError
 
 
-class MyTestCase(unittest.TestCase):
-    def test_buy_with_exact_amount(self):
-        snack = Snack(name='-', value=1.5)
-        buying_money = CashAmount(1, 0.5)
-        self.assertTrue(buy_snack(snack=snack, cash_amount=buying_money))
+class MyTestCase(TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        super().setUpClass()
+        cls.snack = Snack(name='_', value=1.5)
+
+    def test_can_buy_with_exact_amount(self):
+        buying_money = CashAmount(1.5)
+        self.assertTrue(can_buy_snack(snack=self.snack, cash_amount=buying_money))
+
+    def test_can_buy_with_insufficient_cash(self):
+        buying_money = CashAmount(1)
+        # TODO: this exception should be InsufficientCashError
+        self.assertRaisesRegex(Exception, 'Insufficient cash. Provided: 1. Required: 1.5',
+                               can_buy_snack, snack=self.snack, cash_amount=buying_money)
