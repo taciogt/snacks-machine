@@ -4,4 +4,4 @@ from core.snacks.services import foo
 
 class MyTestCase(unittest.TestCase):
     def test_something(self):
-        self.assertEqual(foo(), False)
+        self.assertEqual(foo(), 19)

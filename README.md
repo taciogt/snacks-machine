@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/taciogt/snacks-machine.svg?branch=main)](https://travis-ci.org/taciogt/snacks-machine)
+
 # Snacks Machine
 
 Máquina de Salgadinhos.
