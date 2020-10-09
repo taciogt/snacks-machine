@@ -1,6 +1,10 @@
 # Python
 *.pyc
 
+# coverage reports
+.coverage
+coverage.xml
+
 # Database
 *.sqlite3
 

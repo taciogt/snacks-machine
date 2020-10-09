@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 ipython = "==7.18.1"
+coverage = "5.3"
 
 [packages]
 Django = "==3.1.2"
