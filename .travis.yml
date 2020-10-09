@@ -6,6 +6,7 @@ install:
   - pipenv install --system --deploy --dev
 
 script:
+#  - python -m flake8
   - coverage run -m unittest discover core
   - cd backend && ./manage.py test
 

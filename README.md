@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/taciogt/snacks-machine.svg?branch=main)](https://travis-ci.org/taciogt/snacks-machine)
+[![codecov](https://codecov.io/gh/taciogt/snacks-machine/branch/main/graph/badge.svg)](https://codecov.io/gh/taciogt/snacks-machine)
 
 # Snacks Machine
 
