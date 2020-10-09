@@ -7,3 +7,4 @@ install:
 
 script:
   - python -m unittest discover core
+  - cd backend && ./manage.py test
