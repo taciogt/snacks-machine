@@ -1,7 +1,7 @@
 from django.contrib import admin
-from snacks.models import Snack
+from snacks.models import SnackModel
 
 
-@admin.register(Snack)
+@admin.register(SnackModel)
 class SnackAdmin(admin.ModelAdmin):
     list_display = ('name', 'price')
