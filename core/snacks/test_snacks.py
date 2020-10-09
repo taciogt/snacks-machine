@@ -9,7 +9,7 @@ class MyTestCase(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
-        cls.snack = Snack(name='_', value=1.5)
+        cls.snack = Snack(name='_', price=1.5)
 
     def test_can_buy_with_exact_amount(self):
         buying_money = CashAmount(1.5)
