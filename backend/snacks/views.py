@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.http import JsonResponse
 from django.views import View
-from django.http import HttpResponse, JsonResponse
+
 from .services import list_snacks
 
 
