@@ -16,4 +16,17 @@ class CashAmount:
 
     @property
     def total_value(self):
-        return reduce(lambda x, y: x+y, [cash.value for cash in self.cash_items])
+        return reduce(lambda x, y: x+y, [cash.value for cash in self.cash_items], 0)
+
+    @property
+    def _cash_values(self):
+        return [cash.value for cash in self.cash_items]
+
+    def __str__(self):
+        return f'CashAmount(R$ {self.total_value:.2f})={self._cash_values}'
+
+    __repr__ = __str__
+
+
+class CashRepository:
+    pass
