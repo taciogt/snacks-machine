@@ -7,6 +7,8 @@ install:
 
 script:
   - python -m flake8
+  - python -m mypy core
+  - python -m mypy backend
   - coverage run -m unittest discover core
   - cd backend && ./manage.py test
 

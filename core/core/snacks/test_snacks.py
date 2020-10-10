@@ -5,6 +5,8 @@ from core.currency.entities import CashAmount
 
 
 class MyTestCase(TestCase):
+    # snack: Snack
+
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
