@@ -2,6 +2,7 @@ from unittest import TestCase
 from core.snacks.services import can_buy_snack
 from core.snacks.entities import Snack
 from core.currency.entities import CashAmount
+from ..currency.exceptions import InsufficientCashError
 
 
 class MyTestCase(TestCase):
@@ -18,8 +19,7 @@ class MyTestCase(TestCase):
 
     def test_can_buy_with_insufficient_cash(self):
         buying_money = CashAmount(1)
-        # TODO: this exception should be InsufficientCashError
-        self.assertRaisesRegex(Exception, 'Insufficient cash. Provided: 1. Required: 1.5',
+        self.assertRaisesRegex(InsufficientCashError, r'Insufficient cash. Provided: R\$ 1.00. Required: R\$ 1.50',
                                can_buy_snack, snack=self.snack, cash_amount=buying_money)
 
     def test_can_buy_with_surplus_cash(self):
