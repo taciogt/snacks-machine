@@ -19,3 +19,7 @@ class CalculateChangeTestCase(TestCase):
         self.assertRaisesRegex(InsufficientCashError, r'Insufficient cash. Provided: R\$ 1.00. Required: R\$ 2.00',
                                calculate_change, price=2, cash_provided=CashAmount(1),
                                cash_repository=CashRepositoryMock())
+
+    # def test_change_for_surplus_amount(self):
+    #     change = calculate_change(price=1, cash_provided=CashAmount(1, 1, 1), cash_repository=CashRepositoryMock())
+    #     self.assertEqual(change, CashAmount(1, 1))
