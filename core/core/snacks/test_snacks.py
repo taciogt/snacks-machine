@@ -5,7 +5,7 @@ from core.currency.entities import CashAmount
 
 
 class MyTestCase(TestCase):
-    # snack: Snack
+    snack: Snack
 
     @classmethod
     def setUpClass(cls) -> None:
