@@ -1,7 +1,22 @@
 from unittest import TestCase
 
-from .entities import CashAmount
+from .entities import Cash, CashAmount
 from .exceptions import CashUnavailableToSubtractError, NegativeCashAmountError
+
+
+class CashAmountAddTestCase(TestCase):
+
+    def test_add_cash_to_empty_amount(self):
+        self.assertEqual(CashAmount() + Cash(1), CashAmount(1))
+
+    def test_add_cash_to_not_empty_amount(self):
+        self.assertEqual(CashAmount(5, 1) + Cash(2), CashAmount(5, 2, 1))
+
+    def test_add_cash_amount_to_empty_amount(self):
+        self.assertEqual(CashAmount() + CashAmount(1), CashAmount(1))
+
+    def test_add_cash_amount_to_not_empty_amount(self):
+        self.assertEqual(CashAmount(5, 1) + CashAmount(2), CashAmount(5, 2, 1))
 
 
 class CashAmountSubtractionTestCase(TestCase):

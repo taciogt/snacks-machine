@@ -23,9 +23,14 @@ class CashAmount:
     def total_value(self):
         return reduce(lambda x, y: x+y, [cash.value for cash in self._cash_items], 0)
 
-    def add_cash(self, cash: Cash):
-        self._cash_items.append(cash)
-        self._sort_cash_items()
+    def __add__(self, other: Union[Cash, CashAmount]):
+        if isinstance(other, CashAmount):
+            amount_to_add = other
+        elif isinstance(other, Cash):
+            amount_to_add = CashAmount(other.value)
+        else:
+            raise TypeError(f'other must be {Cash.__name__}')
+        return CashAmount(*self._cash_values, *amount_to_add._cash_values)
 
     def __sub__(self, other: Union[CashAmount, float]) -> CashAmount:
         if isinstance(other, CashAmount):
@@ -43,7 +48,7 @@ class CashAmount:
             if cash.value <= value_to_subtract:
                 value_to_subtract -= cash.value
             else:
-                new_amount.add_cash(cash)
+                new_amount += cash
         if value_to_subtract == 0:
             return new_amount
         else:

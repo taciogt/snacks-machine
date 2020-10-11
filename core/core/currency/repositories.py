@@ -25,7 +25,7 @@ class InMemoryCashRepository(CashRepository):
     _inserted_cash_amount = CashAmount()
 
     def _insert_cash(self, cash: Cash):
-        self._inserted_cash_amount.add_cash(cash)
+        self._inserted_cash_amount += cash
 
     def get_inserted_cash(self) -> CashAmount:
         return self._inserted_cash_amount
