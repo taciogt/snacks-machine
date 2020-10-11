@@ -12,4 +12,3 @@ class CashAmountSubtractionError(Exception):
 class CashUnavailableToSubtractError(Exception):
     def __init__(self):
         super().__init__('Exact cash not available to subtract')
-

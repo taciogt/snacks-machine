@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from .entities import CashAmount
-from .exceptions import CashAmountSubtractionError
+from .exceptions import CashAmountSubtractionError, CashUnavailableToSubtractError
 
 
 class CashAmountSubtractionTestCase(TestCase):
@@ -26,3 +26,7 @@ class CashAmountSubtractionTestCase(TestCase):
     def test_subtract_invalid_type(self):
         self.assertRaisesRegex(TypeError, 'other must be CashAmount or float',
                                lambda: CashAmount(2, 1) - 'invalid_type')
+
+    def test_subtract_when_theres_no_exact_coins_or_bills_available(self):
+        self.assertRaisesRegex(CashUnavailableToSubtractError, 'Exact cash not available to subtract',
+                               lambda: CashAmount(2) - 1)

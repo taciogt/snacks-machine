@@ -31,6 +31,7 @@ class CalculateChangeTestCase(TestCase):
         self.assertEqual(change, CashAmount(2))
 
     def test_change_when_theres_no_exact_coins_or_bills_available(self):
+        # TODO: raises an exception specific for change calculation
         self.assertRaisesRegex(CashUnavailableToSubtractError, 'Exact cash not available to subtract',
                                calculate_change, price=1, cash_provided=CashAmount(2),
                                cash_repository=CashRepositoryMock())
