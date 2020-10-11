@@ -1,11 +1,27 @@
 from unittest import TestCase
-from .services import calculate_change
-from .entities import CashAmount, CashRepository
-from .exceptions import InsufficientCashError, CashUnavailableToSubtractError, NegativeCashAmountError
+
+from .entities import Cash, CashAmount, CashRepository
+from .exceptions import CashUnavailableToSubtractError, NegativeCashAmountError
+from .services import calculate_change, insert_cash
 
 
 class CashRepositoryMock(CashRepository):
-    pass
+    _inserted_cash_amount = CashAmount()
+
+    def insert_cash(self, cash: Cash):
+        self._inserted_cash_amount.add_cash(cash)
+
+    def get_inserted_cash(self) -> CashAmount:
+        return self._inserted_cash_amount
+
+
+class InsertCashTestCase(TestCase):
+    repository = CashRepositoryMock()
+
+    def test_insert_valid_cash(self):
+        insert_cash(Cash(1), repository=self.repository)
+        inserted_amount = self.repository.get_inserted_cash()
+        self.assertEqual(inserted_amount, CashAmount(1))
 
 
 class CalculateChangeTestCase(TestCase):

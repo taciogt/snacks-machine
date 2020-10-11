@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from functools import reduce
 from typing import List, Union
@@ -65,5 +66,11 @@ class CashAmount:
         return self._cash_items == other._cash_items
 
 
-class CashRepository:
-    pass
+class CashRepository(metaclass=ABCMeta):
+    @abstractmethod
+    def insert_cash(self, cash: Cash) -> None:
+        ...
+
+    @abstractmethod
+    def get_inserted_cash(self) -> CashAmount:
+        ...
