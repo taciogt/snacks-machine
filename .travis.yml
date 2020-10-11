@@ -10,7 +10,7 @@ script:
   - python -m mypy core
   - python -m mypy .
   - coverage run -m unittest discover core
-  - cd backend && ./manage.py test
+  - cp -R core/core backend && cd backend && ./manage.py test
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
