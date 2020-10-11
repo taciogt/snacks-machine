@@ -1,4 +1,5 @@
-from .entities import Cash, CashAmount, CashRepository
+from .entities import Cash, CashAmount
+from .repositories import CashRepository
 
 
 def insert_cash(cash: Cash, repository: CashRepository):
