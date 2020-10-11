@@ -30,7 +30,7 @@ class CashAmount:
             amount_to_add = CashAmount(other.value)
         else:
             raise TypeError(f'other must be {Cash.__name__}')
-        return CashAmount(*self._cash_values, *amount_to_add._cash_values)
+        return CashAmount(*self.cash_values, *amount_to_add.cash_values)
 
     def __sub__(self, other: Union[CashAmount, float]) -> CashAmount:
         if isinstance(other, CashAmount):
@@ -55,14 +55,14 @@ class CashAmount:
             raise CashUnavailableToSubtractError()
 
     @property
-    def _cash_values(self):
+    def cash_values(self):
         return [cash.value for cash in self._cash_items]
 
     def _sort_cash_items(self):
         self._cash_items = sorted(self._cash_items, key=lambda cash: -cash.value)
 
     def __str__(self):
-        return f'CashAmount(R$ {self.total_value:.2f})={self._cash_values}'
+        return f'CashAmount(R$ {self.total_value:.2f})={self.cash_values}'
 
     __repr__ = __str__
 
