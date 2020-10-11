@@ -7,3 +7,9 @@ class InsufficientCashError(Exception):
 class CashAmountSubtractionError(Exception):
     def __init__(self, original_cash_value: float, subtraction_value: float):
         super().__init__('Not enough cash to subtract')
+
+
+class CashUnavailableToSubtractError(Exception):
+    def __init__(self):
+        super().__init__('Exact cash not available to subtract')
+

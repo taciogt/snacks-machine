@@ -1,7 +1,7 @@
 from unittest import TestCase
 from .services import calculate_change
 from .entities import CashAmount, CashRepository
-from .exceptions import InsufficientCashError
+from .exceptions import InsufficientCashError, CashUnavailableToSubtractError
 
 
 class CashRepositoryMock(CashRepository):
@@ -29,3 +29,8 @@ class CalculateChangeTestCase(TestCase):
 
         change = calculate_change(price=6, cash_provided=CashAmount(5, 2, 1), cash_repository=CashRepositoryMock())
         self.assertEqual(change, CashAmount(2))
+
+    def test_change_when_theres_no_exact_coins_or_bills_available(self):
+        self.assertRaisesRegex(CashUnavailableToSubtractError, 'Exact cash not available to subtract',
+                               calculate_change, price=1, cash_provided=CashAmount(2),
+                               cash_repository=CashRepositoryMock())

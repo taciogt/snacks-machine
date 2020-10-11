@@ -3,9 +3,9 @@ from .exceptions import InsufficientCashError
 
 
 def calculate_change(price: float, cash_provided: CashAmount, cash_repository: CashRepository) -> CashAmount:
-    if price == cash_provided.total_value:
-        return CashAmount()
-    elif price > cash_provided.total_value:
+    # if price == cash_provided.total_value:
+    #     return CashAmount()
+    if price > cash_provided.total_value:
         raise InsufficientCashError(cash_provided=cash_provided.total_value, cash_required=price)
     else:
         # cash_to_pay = CashAmount()

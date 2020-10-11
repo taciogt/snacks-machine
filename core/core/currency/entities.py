@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from functools import reduce
 from typing import List, Union
-from .exceptions import CashAmountSubtractionError
+from .exceptions import CashAmountSubtractionError, CashUnavailableToSubtractError
 
 
 @dataclass
@@ -39,7 +39,8 @@ class CashAmount:
                     new_amount.add_cash(cash)
 
             if other_index < other_len:
-                raise CashAmountSubtractionError(original_cash_value=self.total_value, subtraction_value=other.total_value)
+                raise CashAmountSubtractionError(original_cash_value=self.total_value,
+                                                 subtraction_value=other.total_value)
 
             return new_amount
         elif isinstance(other, (int, float)):
@@ -52,8 +53,9 @@ class CashAmount:
             if other == 0:
                 return new_amount
             else:
-                raise CashAmountSubtractionError(original_cash_value=self.total_value,
-                                                 subtraction_value=other)
+                # raise CashAmountSubtractionError(original_cash_value=self.total_value,
+                #                                  subtraction_value=other)
+                raise CashUnavailableToSubtractError()
 
         raise TypeError(f'other must be {CashAmount.__name__} or {float.__name__}')
 
