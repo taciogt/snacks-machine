@@ -49,5 +49,3 @@ class InMemorySnackRepository(SnackRepository):
     @classmethod
     def clear_snacks(cls):
         cls.snacks = list()
-
-
