@@ -7,7 +7,7 @@ from .models import SnackModel
 
 class DatabaseRepository(SnackRepository):
     @classmethod
-    def insert_snack(cls, snack: Snack) -> Snack:
+    def create_snack(cls, snack: Snack) -> Snack:
         # stored_snack =
         pass
 
