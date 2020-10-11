@@ -14,3 +14,7 @@ def can_buy_snack(snack: Snack, cash_amount: CashAmount):
 
 def list_snacks(repository: SnackRepository) -> List[Snack]:
     return repository.list_snacks()
+
+
+def recharge_snack(name: str, quantity: int, repository: SnackRepository) -> Snack:
+    return repository.recharge_snack(name=name, quantity=quantity)

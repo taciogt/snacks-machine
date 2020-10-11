@@ -7,6 +7,10 @@ from .models import SnackModel
 
 class DatabaseRepository(SnackRepository):
     @classmethod
+    def _recharge_snack(cls, name: str, quantity: int) -> Snack:
+        pass
+
+    @classmethod
     def create_snack(cls, snack: Snack) -> Snack:
         # stored_snack =
         pass
