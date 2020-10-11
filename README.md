@@ -13,4 +13,5 @@ Snacks dependem da moeda (`Currency`) e não o contrário, porque a moeda é uma
 ## Hipóteses Assumidas
 * A máquina possui uma quantidade limitada de moedas e notas. 
   * Essa quantidade varia conforme os usuários interagem com a máquina.
-  * Caso não seja possível fornecer o troco adequado para o usuário, todo dinheiro inserido pelo usuário deve ser devolvido. 
+  * Caso não seja possível fornecer o troco adequado para o usuário, todo dinheiro inserido pelo usuário deve ser devolvido.
+* Para fins de prototipação, não é críticao considerar aspectos de segurança como autenticação de usuários ou proteção contra CSRF.  
