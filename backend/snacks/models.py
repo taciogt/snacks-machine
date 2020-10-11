@@ -11,4 +11,5 @@ class SnackModel(models.Model):
 
     def as_dict(self):
         return {field.name: getattr(self, field.name)
-                for field in self._meta.get_fields()}
+                for field in self._meta.get_fields()
+                if field.name is not 'id'}

@@ -1,11 +1,28 @@
 from unittest import TestCase
-from core.snacks.services import can_buy_snack
-from core.snacks.entities import Snack
+
 from core.currency.entities import CashAmount
-from ..currency.exceptions import InsufficientCashError
+from core.currency.exceptions import InsufficientCashError
+from .entities import Snack
+from .repositories import InMemorySnackRepository
+from .services import can_buy_snack
 
 
-class MyTestCase(TestCase):
+class SnacksRepositoryTests(TestCase):
+    snack: Snack
+    repository = InMemorySnackRepository()
+
+    def test_list_snacks(self):
+        snack_to_insert = Snack(price=1, name='S1')
+        self.repository.insert_snack(snack_to_insert)
+
+        snacks = self.repository.list_snacks()
+        self.assertTrue(snacks, [snack_to_insert])
+
+    def test_recharge_snacks(self):
+        pass
+
+
+class BuySnacksTests(TestCase):
     snack: Snack
 
     @classmethod
