@@ -29,7 +29,7 @@ class CashAmount:
         elif isinstance(other, Cash):
             amount_to_add = CashAmount(other.value)
         else:
-            raise TypeError(f'other must be {Cash.__name__}')
+            raise TypeError(f'other must be {Cash.__name__} but is {other.__class__.__name__}')
         return CashAmount(*self.cash_values, *amount_to_add.cash_values)
 
     def __sub__(self, other: Union[CashAmount, float]) -> CashAmount:
