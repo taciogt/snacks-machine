@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from functools import reduce
-from typing import List
+from typing import List, Union
 from .exceptions import CashAmountSubtractionError
 
 
@@ -26,28 +26,43 @@ class CashAmount:
         self._cash_items.append(cash)
         self._sort_cash_items()
 
-    def __sub__(self, other: CashAmount) -> CashAmount:
-        other_index = 0
-        other_len = len(other._cash_items)
+    def __sub__(self, other: Union[CashAmount, float]) -> CashAmount:
+        if isinstance(other, CashAmount):
+            other_index = 0
+            other_len = len(other._cash_items)
 
-        new_amount = CashAmount()
-        for cash in self._cash_items:
-            if other_index < other_len and cash == other._cash_items[other_index]:
-                other_index += 1
+            new_amount = CashAmount()
+            for cash in self._cash_items:
+                if other_index < other_len and cash == other._cash_items[other_index]:
+                    other_index += 1
+                else:
+                    new_amount.add_cash(cash)
+
+            if other_index < other_len:
+                raise CashAmountSubtractionError(original_cash_value=self.total_value, subtraction_value=other.total_value)
+
+            return new_amount
+        elif isinstance(other, (int, float)):
+            new_amount = CashAmount()
+            for cash in self._cash_items:
+                if cash.value <= other:
+                    other -= cash.value
+                else:
+                    new_amount.add_cash(cash)
+            if other == 0:
+                return new_amount
             else:
-                new_amount.add_cash(cash)
+                raise CashAmountSubtractionError(original_cash_value=self.total_value,
+                                                 subtraction_value=other)
 
-        if other_index < other_len:
-            raise CashAmountSubtractionError(original_cash_value=self.total_value, subtraction_value=other.total_value)
-
-        return new_amount
+        raise TypeError(f'other must be {CashAmount.__name__} or {float.__name__}')
 
     @property
     def _cash_values(self):
         return [cash.value for cash in self._cash_items]
 
     def _sort_cash_items(self):
-        self._cash_items = sorted(self._cash_items, key=lambda cash: cash.value)
+        self._cash_items = sorted(self._cash_items, key=lambda cash: -cash.value)
 
     def __str__(self):
         return f'CashAmount(R$ {self.total_value:.2f})={self._cash_values}'

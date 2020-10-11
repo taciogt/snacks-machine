@@ -22,3 +22,7 @@ class CashAmountSubtractionTestCase(TestCase):
     def test_subtract_greater_amount(self):
         self.assertRaisesRegex(CashAmountSubtractionError, 'Not enough cash to subtract',
                                lambda: CashAmount(2, 1) - CashAmount(5))
+
+    def test_subtract_invalid_type(self):
+        self.assertRaisesRegex(TypeError, 'other must be CashAmount or float',
+                               lambda: CashAmount(2, 1) - 'invalid_type')

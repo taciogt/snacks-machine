@@ -20,6 +20,12 @@ class CalculateChangeTestCase(TestCase):
                                calculate_change, price=2, cash_provided=CashAmount(1),
                                cash_repository=CashRepositoryMock())
 
-    # def test_change_for_surplus_amount(self):
-    #     change = calculate_change(price=1, cash_provided=CashAmount(1, 1, 1), cash_repository=CashRepositoryMock())
-    #     self.assertEqual(change, CashAmount(1, 1))
+    def test_change_for_surplus_amount(self):
+        change = calculate_change(price=1, cash_provided=CashAmount(1, 1, 1), cash_repository=CashRepositoryMock())
+        self.assertEqual(change, CashAmount(1, 1))
+
+        change = calculate_change(price=2, cash_provided=CashAmount(1, 1, 1), cash_repository=CashRepositoryMock())
+        self.assertEqual(change, CashAmount(1))
+
+        change = calculate_change(price=6, cash_provided=CashAmount(5, 2, 1), cash_repository=CashRepositoryMock())
+        self.assertEqual(change, CashAmount(2))
