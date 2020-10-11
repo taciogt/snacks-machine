@@ -3,7 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from functools import reduce
 from typing import List, Union
-from .exceptions import CashAmountSubtractionError, CashUnavailableToSubtractError
+
+from .exceptions import CashUnavailableToSubtractError, NegativeCashAmountError
 
 
 @dataclass
@@ -28,36 +29,25 @@ class CashAmount:
 
     def __sub__(self, other: Union[CashAmount, float]) -> CashAmount:
         if isinstance(other, CashAmount):
-            other_index = 0
-            other_len = len(other._cash_items)
-
-            new_amount = CashAmount()
-            for cash in self._cash_items:
-                if other_index < other_len and cash == other._cash_items[other_index]:
-                    other_index += 1
-                else:
-                    new_amount.add_cash(cash)
-
-            if other_index < other_len:
-                raise CashAmountSubtractionError(original_cash_value=self.total_value,
-                                                 subtraction_value=other.total_value)
-
-            return new_amount
+            value_to_subtract = other.total_value
         elif isinstance(other, (int, float)):
-            new_amount = CashAmount()
-            for cash in self._cash_items:
-                if cash.value <= other:
-                    other -= cash.value
-                else:
-                    new_amount.add_cash(cash)
-            if other == 0:
-                return new_amount
-            else:
-                # raise CashAmountSubtractionError(original_cash_value=self.total_value,
-                #                                  subtraction_value=other)
-                raise CashUnavailableToSubtractError()
+            value_to_subtract = other
+        else:
+            raise TypeError(f'other must be {CashAmount.__name__} or {float.__name__}')
 
-        raise TypeError(f'other must be {CashAmount.__name__} or {float.__name__}')
+        if self.total_value < value_to_subtract:
+            raise NegativeCashAmountError()
+
+        new_amount = CashAmount()
+        for cash in self._cash_items:
+            if cash.value <= value_to_subtract:
+                value_to_subtract -= cash.value
+            else:
+                new_amount.add_cash(cash)
+        if value_to_subtract == 0:
+            return new_amount
+        else:
+            raise CashUnavailableToSubtractError()
 
     @property
     def _cash_values(self):
