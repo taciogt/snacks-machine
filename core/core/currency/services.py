@@ -13,5 +13,3 @@ def calculate_change(price: float, cash_provided: CashAmount, cash_repository: C
             if cash_to_pay.total_value < price:
                 cash_to_pay.add_cash(cash)
         return cash_provided - cash_to_pay
-
-

@@ -26,7 +26,7 @@ class CashAmount:
         self._cash_items.append(cash)
         self._sort_cash_items()
 
-    def __sub__(self, other: CashAmount):
+    def __sub__(self, other: CashAmount) -> CashAmount:
         other_index = 0
         other_len = len(other._cash_items)
 
@@ -54,7 +54,7 @@ class CashAmount:
 
     __repr__ = __str__
 
-    def __eq__(self, other: CashAmount):
+    def __eq__(self, other):
         return self._cash_items == other._cash_items
 
 

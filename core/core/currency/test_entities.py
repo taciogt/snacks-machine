@@ -20,4 +20,5 @@ class CashAmountSubtractionTestCase(TestCase):
         self.assertEqual(CashAmount(1, 1, 2, 1, 1) - CashAmount(1, 1, 2), CashAmount(1, 1))
 
     def test_subtract_greater_amount(self):
-        self.assertRaisesRegex(CashAmountSubtractionError, 'Not enough cash to subtract', lambda: CashAmount(2, 1) - CashAmount(5), )
+        self.assertRaisesRegex(CashAmountSubtractionError, 'Not enough cash to subtract',
+                               lambda: CashAmount(2, 1) - CashAmount(5))
