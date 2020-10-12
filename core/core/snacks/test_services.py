@@ -3,9 +3,9 @@ from unittest import TestCase
 from core.currency.entities import CashAmount
 from core.currency.exceptions import InsufficientCashError
 from .entities import Snack
-from .repositories import InMemorySnackRepository
-from .services import can_buy_snack
 from .exceptions import NegativeSnackQuantityError
+from .repositories import InMemorySnackRepository
+from .services import can_buy_snack, recharge_snack, list_snacks
 
 
 class RechargeSnacksTests(TestCase):
@@ -19,9 +19,9 @@ class RechargeSnacksTests(TestCase):
         self.repository.create_snack(self.snack_to_insert)
 
     def test_recharge_snacks(self):
-        self.repository.recharge_snack(name=self.snack_to_insert.name, quantity=2)
+        recharge_snack(name=self.snack_to_insert.name, quantity=2, repository=self.repository)
 
-        snacks = self.repository.list_snacks()
+        snacks = list_snacks(repository=self.repository)
 
         self.assertEqual(len(snacks), 1)
         snack = snacks[0]
@@ -31,7 +31,7 @@ class RechargeSnacksTests(TestCase):
 
     def test_recharge_snacks_with_negative_quantity(self):
         self.assertRaises(NegativeSnackQuantityError,
-                          self.repository.recharge_snack, name=self.snack_to_insert.name, quantity=-1)
+                          recharge_snack, name=self.snack_to_insert.name, quantity=-1, repository=self.repository)
 
 
 class BuySnacksTests(TestCase):

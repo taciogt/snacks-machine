@@ -3,6 +3,7 @@ from typing import List
 from core.currency.entities import CashAmount
 from core.currency.exceptions import InsufficientCashError
 from .entities import Snack
+from .exceptions import NegativeSnackQuantityError
 from .repositories import SnackRepository
 
 
@@ -17,4 +18,6 @@ def list_snacks(repository: SnackRepository) -> List[Snack]:
 
 
 def recharge_snack(name: str, quantity: int, repository: SnackRepository) -> Snack:
+    if quantity < 0:
+        raise NegativeSnackQuantityError
     return repository.recharge_snack(name=name, quantity=quantity)

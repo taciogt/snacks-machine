@@ -7,7 +7,7 @@ from .models import SnackModel
 
 class DatabaseRepository(SnackRepository):
     @classmethod
-    def _recharge_snack(cls, name: str, quantity: int) -> Snack:
+    def recharge_snack(cls, name: str, quantity: int) -> Snack:
         pass
 
     @classmethod
