@@ -21,4 +21,3 @@ def recharge_snack(name: str, quantity: int, repository: SnackRepository) -> Sna
     if quantity < 0:
         raise NegativeSnackQuantityError
     return repository.recharge_snack(name=name, quantity=quantity)
-
