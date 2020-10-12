@@ -23,7 +23,7 @@ class CashAmount:
     def total_value(self):
         return reduce(lambda x, y: x+y, [cash.value for cash in self._cash_items], 0)
 
-    def __add__(self, other: Union[Cash, CashAmount]):
+    def __add__(self, other: Union[Cash, CashAmount]) -> CashAmount:
         if isinstance(other, CashAmount):
             amount_to_add = other
         elif isinstance(other, Cash):
