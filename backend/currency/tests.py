@@ -32,7 +32,7 @@ class InsertCashEndpointTests(TestCase):
 
     def test_insert_invalid_cash(self):
         response = self.client.post(path=reverse(viewname='currency-api'),
-                               data={'cash_value': 3})
+                                    data={'cash_value': 3})
 
         self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
         content = response.content.decode()
