@@ -2,13 +2,13 @@ from functools import partial
 from unittest import TestCase
 
 from core.currency.entities import Cash, CashAmount
-from core.currency.services import insert_cash as _insert_cash, retrieve_cash as _retrieve_cash
-from core.currency.repositories import InMemoryCashRepository
 from core.currency.exceptions import InsufficientCashError
+from core.currency.repositories import InMemoryCashRepository
+from core.currency.services import insert_cash as _insert_cash, retrieve_cash as _retrieve_cash
 from .entities import Snack
 from .exceptions import NegativeSnackQuantityError, SnackNotFound
 from .repositories import InMemorySnackRepository
-from .services import can_buy_snack, recharge_snack as _recharge_snack, list_snacks as _list_snacks, \
+from .services import recharge_snack as _recharge_snack, list_snacks as _list_snacks, \
     buy_snack as _buy_snack
 
 cash_repository = InMemoryCashRepository()
@@ -65,19 +65,6 @@ class BuySnacksTests(TestCase):
         repository.create_snack(self.snack_a)
         repository.recharge_snack(name=self.snack_a.name, quantity=5)
 
-    # def test_can_buy_with_exact_amount(self):
-    #     buying_money = CashAmount(1.5)
-    #     self.assertTrue(can_buy_snack(snack=self.snack, cash_amount=buying_money))
-
-    # def test_can_buy_with_insufficient_cash(self):
-    #     buying_money = CashAmount(1)
-    #     self.assertRaisesRegex(InsufficientCashError, r'Insufficient cash. Provided: R\$ 1.00. Required: R\$ 1.50',
-    #                            can_buy_snack, snack=self.snack, cash_amount=buying_money)
-
-    def test_can_buy_with_surplus_cash(self):
-        buying_money = CashAmount(2)
-        self.assertTrue(can_buy_snack(snack=self.snack, cash_amount=buying_money))
-
     def test_buy_with_exact_amount(self):
         insert_cash(cash=Cash(2))
 
@@ -104,3 +91,37 @@ class BuySnacksTests(TestCase):
 
         self.assertEqual(cash_repository.get_wallet_cash(), CashAmount(.5))
         self.assertEqual(cash_repository.get_cash_available_on_register(), CashAmount())
+
+    def test_buy_with_surplus_cash(self):
+        for _ in range(4):
+            insert_cash(cash=Cash(.5))
+        insert_cash(cash=Cash(.25))
+        insert_cash(cash=Cash(5))
+
+        change = buy_snack(name=self.snack_a.name)
+
+        self.assertEqual(change, CashAmount(5, .25))
+        snacks_available = list_snacks()
+        self.assertEqual(snacks_available, [Snack(name='snack-a',
+                                                  price=2,
+                                                  available_quantity=4)])
+
+        self.assertEqual(cash_repository.get_wallet_cash(), CashAmount())
+        self.assertEqual(cash_repository.get_cash_available_on_register(), CashAmount(.5, .5, .5, .5))
+
+    # def test_buy_with_insufficient_cash_on_register_for_change(self):
+    #     for _ in range(4):
+    #         insert_cash(cash=Cash(.5))
+    #     insert_cash(cash=Cash(.25))
+    #     insert_cash(cash=Cash(5))
+    #
+    #     change = buy_snack(name=self.snack_a.name)
+    #
+    #     self.assertEqual(change, CashAmount(5, .25))
+    #     snacks_available = list_snacks()
+    #     self.assertEqual(snacks_available, [Snack(name='snack-a',
+    #                                               price=2,
+    #                                               available_quantity=4)])
+    #
+    #     self.assertEqual(cash_repository.get_wallet_cash(), CashAmount())
+    #     self.assertEqual(cash_repository.get_cash_available_on_register(), CashAmount(.5, .5, .5, .5))
