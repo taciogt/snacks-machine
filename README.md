@@ -56,6 +56,17 @@ Snacks dependem da moeda (`Currency`) e não o contrário, porque a moeda é uma
      * Armazenamento em arquivo de texto
      * Armazenamento em banco de dados local
      * Armazenamento em banco de dados remoto.
+     
+* `backend.<x>.services`
+  * Define uma implementação de Repository como padrão
+  * Atua fazendo algo próximo a um [currying](https://en.wikipedia.org/wiki/Currying) das funções em `core.<x>.services`. Se necessário, pode mudar um pouco a assinatura da função apenas para se aplicar melhor ao contexto do backend (por exemplo, um argumento `snack: Snack` pode virar `snack_name: str`).    
+
+* `backend.<x>.views`
+  * Camada responsável por implementar os endpoints, tratando o request HTTP e retornando a resposta adequada.
+  * Única camada ciente do contexto web do backend
+  * Para tratar casos de exceção, utiliza as exceções definidas em `core.<x>.exceptions` para fazer o controle de fluxo e retornar o status code adequado para cda situação. 
+    
+ 
   
  
 ![Diagrama de Arquitetura](diagrams.png)
@@ -74,5 +85,7 @@ Snacks dependem da moeda (`Currency`) e não o contrário, porque a moeda é uma
 
 * O `CashAmount` não faz uso otimizado da memória pois armazena cada nota/moeda como um objeto diferente em uma lista. Essa otimização pode ser feita de duas formas (simultaneamente):  
   * Em vez de armazenar uma lista com todas as notas/moedas, armazenar apenas a quantidade de cada tipo e nota/moeda.
-  * Além disso, tranformar cada objeto `Cash(2), Cash(.5), ...` em um Singleton correspondente a cada valor. 
+  * Além disso, tranformar cada objeto `Cash(2), Cash(.5), ...` em um Singleton correspondente a cada valor.
+  
+* O banco de dados utilizado pelo backend é um SQLite. Pode-se utilizar o MySQL caso seja necessário um banco de dados em produção. Utilizando docker compose é possível testar essa solução sem adicionar nenhuma dificuldade ao setup do ambiente de desenvolvimento.  
     
