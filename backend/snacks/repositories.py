@@ -1,9 +1,10 @@
-from typing import List, NoReturn
+from dataclasses import asdict
+from typing import List
 
 from core.snacks.entities import Snack
 from core.snacks.repositories import SnackRepository
 from .models import SnackModel
-from dataclasses import asdict
+from core.snacks.exceptions import SnackNotFound
 
 
 class DatabaseRepository(SnackRepository):
@@ -13,10 +14,14 @@ class DatabaseRepository(SnackRepository):
 
     @classmethod
     def recharge_snack(cls, name: str, quantity: int) -> Snack:
-        snack = SnackModel.objects.get(name=name)
-        snack.available_quantity += quantity
-        snack.save()
-        return Snack(**snack.as_dict())
+        try:
+            snack = SnackModel.objects.get(name=name)
+        except SnackModel.DoesNotExist:
+            raise SnackNotFound(name=name)
+        else:
+            snack.available_quantity += quantity
+            snack.save()
+            return Snack(**snack.as_dict())
 
     @classmethod
     def create_snack(cls, snack: Snack) -> Snack:

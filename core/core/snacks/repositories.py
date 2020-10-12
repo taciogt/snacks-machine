@@ -1,7 +1,8 @@
 from abc import ABCMeta, abstractmethod
-from typing import List, NoReturn
+from typing import List
 
 from .entities import Snack
+from .exceptions import SnackNotFound
 
 
 class SnackRepository(metaclass=ABCMeta):
@@ -40,7 +41,10 @@ class InMemorySnackRepository(SnackRepository):
 
     @classmethod
     def recharge_snack(cls, name: str, quantity: int) -> Snack:
-        snack = next(snack for snack in cls.snacks if snack.name == name)
+        try:
+            snack = next(snack for snack in cls.snacks if snack.name == name)
+        except StopIteration:
+            raise SnackNotFound(name=name)
         snack.available_quantity += quantity
         return snack
 

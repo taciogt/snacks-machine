@@ -4,7 +4,7 @@ from unittest import TestCase
 from core.currency.entities import CashAmount
 from core.currency.exceptions import InsufficientCashError
 from .entities import Snack
-from .exceptions import NegativeSnackQuantityError
+from .exceptions import NegativeSnackQuantityError, SnackNotFound
 from .repositories import InMemorySnackRepository
 from .services import can_buy_snack, recharge_snack, list_snacks
 
@@ -36,6 +36,10 @@ class RechargeSnacksTests(TestCase):
     def test_recharge_snacks_with_negative_quantity(self):
         self.assertRaises(NegativeSnackQuantityError,
                           recharge_snack, name=self.snack_to_insert.name, quantity=-1)
+
+    def test_recharge_snacks_with_invalid_name(self):
+        self.assertRaisesRegex(SnackNotFound, 'Snack "invalid name" not found.',
+                               recharge_snack, name='invalid name', quantity=1)
 
 
 class BuySnacksTests(TestCase):

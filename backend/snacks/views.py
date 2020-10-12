@@ -1,9 +1,9 @@
 from dataclasses import asdict
 
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.views import View
 
-from core.snacks.exceptions import NegativeSnackQuantityError
+from core.snacks.exceptions import NegativeSnackQuantityError, SnackNotFound
 from .services import list_snacks, recharge_snack
 
 
@@ -20,5 +20,7 @@ class SnacksView(View):
             snack = recharge_snack(name=name, quantity=quantity)
         except NegativeSnackQuantityError as exception:
             return HttpResponseBadRequest(str(exception))
+        except SnackNotFound as exception:
+            return HttpResponseNotFound(str(exception))
         else:
             return JsonResponse({'snack': asdict(snack)})
