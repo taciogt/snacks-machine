@@ -47,9 +47,9 @@ class RetrieveCashEndpointTests(TestCase):
         repository.retrieve_wallet_cash()
 
     def test_retrieve_cash(self):
-        repository.insert_cash(cash=Cash(2))
-        repository.insert_cash(cash=Cash(.01))
-        repository.insert_cash(cash=Cash(.5))
+        repository.insert_wallet_cash(cash=Cash(2))
+        repository.insert_wallet_cash(cash=Cash(.01))
+        repository.insert_wallet_cash(cash=Cash(.5))
 
         response = self.client.delete(path=reverse(viewname='currency-api'))
         self.assertEqual(response.status_code, HTTP_200_OK)

@@ -17,8 +17,9 @@ def can_buy_snack(snack: Snack, cash_amount: CashAmount):
 
 def buy_snack(name: str, repository: SnackRepository, cash_repository: CashRepository) -> CashAmount:
     snack = repository.get_snack(name=name)
+    change = make_purchase(price=snack.price, repository=cash_repository)
     repository.remove_snack(snack=snack, quantity=1)
-    return make_purchase(price=snack.price, repository=cash_repository)
+    return change
 
 
 def list_snacks(repository: SnackRepository) -> List[Snack]:

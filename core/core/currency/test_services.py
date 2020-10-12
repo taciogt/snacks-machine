@@ -28,12 +28,12 @@ class RetrieveCashTests(TestCase):
         self.repository.retrieve_wallet_cash()
 
     def test_retrieve_cash(self):
-        self.repository.insert_cash(cash=Cash(2))
+        self.repository.insert_wallet_cash(cash=Cash(2))
         self.assertEqual(self.repository.retrieve_wallet_cash(), CashAmount(2))
         self.assertEqual(self.repository.get_wallet_cash(), CashAmount())
 
-        self.repository.insert_cash(cash=Cash(2))
-        self.repository.insert_cash(cash=Cash(5))
+        self.repository.insert_wallet_cash(cash=Cash(2))
+        self.repository.insert_wallet_cash(cash=Cash(5))
         self.assertEqual(self.repository.retrieve_wallet_cash(), CashAmount(5, 2))
         self.assertEqual(self.repository.get_wallet_cash(), CashAmount())
 

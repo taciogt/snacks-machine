@@ -56,6 +56,8 @@ class BuySnacksTests(TestCase):
     def setUp(self) -> None:
         super().setUpClass()
         repository.clear_snacks()
+        cash_repository.retrieve_wallet_cash()
+        cash_repository.retrieve_cash_available_on_register()
 
         self.snack = Snack(name='_', price=1.5)
 
@@ -67,10 +69,10 @@ class BuySnacksTests(TestCase):
     #     buying_money = CashAmount(1.5)
     #     self.assertTrue(can_buy_snack(snack=self.snack, cash_amount=buying_money))
 
-    def test_can_buy_with_insufficient_cash(self):
-        buying_money = CashAmount(1)
-        self.assertRaisesRegex(InsufficientCashError, r'Insufficient cash. Provided: R\$ 1.00. Required: R\$ 1.50',
-                               can_buy_snack, snack=self.snack, cash_amount=buying_money)
+    # def test_can_buy_with_insufficient_cash(self):
+    #     buying_money = CashAmount(1)
+    #     self.assertRaisesRegex(InsufficientCashError, r'Insufficient cash. Provided: R\$ 1.00. Required: R\$ 1.50',
+    #                            can_buy_snack, snack=self.snack, cash_amount=buying_money)
 
     def test_can_buy_with_surplus_cash(self):
         buying_money = CashAmount(2)
@@ -88,3 +90,17 @@ class BuySnacksTests(TestCase):
 
         self.assertEqual(cash_repository.get_wallet_cash(), CashAmount())
         self.assertEqual(cash_repository.get_cash_available_on_register(), CashAmount(2))
+
+    def test_buy_with_insufficient_cash(self):
+        insert_cash(cash=Cash(.5))
+
+        self.assertRaisesRegex(InsufficientCashError, 'Insufficient cash. Provided: R\$ 0.50. Required: R\$ 2.00',
+                               buy_snack, name=self.snack_a.name)
+
+        snacks_available = list_snacks()
+        self.assertEqual(snacks_available, [Snack(name='snack-a',
+                                                  price=2,
+                                                  available_quantity=5)])
+
+        self.assertEqual(cash_repository.get_wallet_cash(), CashAmount(.5))
+        self.assertEqual(cash_repository.get_cash_available_on_register(), CashAmount())
