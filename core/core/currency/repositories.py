@@ -22,6 +22,11 @@ class CashRepository(metaclass=ABCMeta):
     def get_inserted_cash(cls) -> CashAmount:
         ...
 
+    @classmethod
+    @abstractmethod
+    def retrieve_cash(cls) -> CashAmount:
+        ...
+
 
 class InMemoryCashRepository(CashRepository):
     _inserted_cash_amount = CashAmount()
@@ -33,3 +38,9 @@ class InMemoryCashRepository(CashRepository):
     @classmethod
     def get_inserted_cash(cls) -> CashAmount:
         return cls._inserted_cash_amount
+
+    @classmethod
+    def retrieve_cash(cls) -> CashAmount:
+        cash_to_retrieve = cls._inserted_cash_amount
+        cls._inserted_cash_amount = CashAmount()
+        return cash_to_retrieve

@@ -1,12 +1,12 @@
 from unittest import TestCase
 
 from .entities import Cash, CashAmount
-from .repositories import InMemoryCashRepository
 from .exceptions import CashUnavailableToSubtractError, NegativeCashAmountError, InvalidCashValueError
+from .repositories import InMemoryCashRepository
 from .services import calculate_change, insert_cash
 
 
-class InsertCashTestCase(TestCase):
+class InsertCashTests(TestCase):
     repository = InMemoryCashRepository()
 
     def test_insert_valid_cash(self):
@@ -20,7 +20,25 @@ class InsertCashTestCase(TestCase):
                                insert_cash, cash=Cash(1), repository=self.repository)
 
 
-class CalculateChangeTestCase(TestCase):
+class RetrieveCashTests(TestCase):
+    repository = InMemoryCashRepository()
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.repository.retrieve_cash()
+
+    def test_retrieve_cash(self):
+        self.repository.insert_cash(cash=Cash(2))
+        self.assertEqual(self.repository.retrieve_cash(), CashAmount(2))
+        self.assertEqual(self.repository.get_inserted_cash(), CashAmount())
+
+        self.repository.insert_cash(cash=Cash(2))
+        self.repository.insert_cash(cash=Cash(5))
+        self.assertEqual(self.repository.retrieve_cash(), CashAmount(5, 2))
+        self.assertEqual(self.repository.get_inserted_cash(), CashAmount())
+
+
+class CalculateChangeTests(TestCase):
     cash_repository = InMemoryCashRepository()
 
     def test_change_for_exact_amount(self):

@@ -7,6 +7,10 @@ def insert_cash(cash: Cash, repository: CashRepository) -> CashAmount:
     return repository.get_inserted_cash()
 
 
+def retrieve_cash(repository: CashRepository) -> CashAmount:
+    return repository.retrieve_cash()
+
+
 def calculate_change(price: float, cash_provided: CashAmount, cash_repository: CashRepository) -> CashAmount:
     change = cash_provided - price
     return change

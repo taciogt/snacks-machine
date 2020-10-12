@@ -1,8 +1,8 @@
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.views import View
 
-from .services import insert_cash
 from core.currency.exceptions import InvalidCashValueError
+from .services import insert_cash, retrieve_cash
 
 
 class CurrencyView(View):
@@ -17,3 +17,10 @@ class CurrencyView(View):
                 'cash_amount': cash_amount.cash_values,
                 'total_value': cash_amount.total_value
             })
+
+    def delete(self, request):
+        cash_amount = retrieve_cash()
+        return JsonResponse({
+            'cash_amount': cash_amount.cash_values,
+            'total_value': cash_amount.total_value
+        })
