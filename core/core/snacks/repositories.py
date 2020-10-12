@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from typing import List
+from typing import List, NoReturn
 
 from .entities import Snack
 
@@ -18,6 +18,11 @@ class SnackRepository(metaclass=ABCMeta):
     @classmethod
     @abstractmethod
     def recharge_snack(cls, name: str, quantity: int) -> Snack:
+        ...
+
+    @classmethod
+    @abstractmethod
+    def clear_snacks(cls) -> NoReturn:
         ...
 
 

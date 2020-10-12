@@ -1,8 +1,9 @@
-from typing import List
-from core.snacks.entities import Snack
 from .repositories import DatabaseRepository
-from core.snacks.services import list_snacks as core_list_snacks
+from core.snacks.services import list_snacks as _list_snacks, recharge_snack as _recharge_snack
+from core.utils.functions import currying_repository
 
 
-def list_snacks() -> List[Snack]:
-    return core_list_snacks(repository=DatabaseRepository())
+repository = DatabaseRepository()
+
+list_snacks = currying_repository(_list_snacks, repository=repository)
+recharge_snack = currying_repository(_recharge_snack, repository=repository)
