@@ -22,7 +22,7 @@ class SnackRepository(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    def clear_snacks(cls) -> NoReturn:
+    def clear_snacks(cls) -> None:
         ...
 
 

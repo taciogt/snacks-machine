@@ -8,7 +8,7 @@ from dataclasses import asdict
 
 class DatabaseRepository(SnackRepository):
     @classmethod
-    def clear_snacks(cls) -> NoReturn:
+    def clear_snacks(cls) -> None:
         SnackModel.objects.all().delete()
 
     @classmethod
