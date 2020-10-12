@@ -1,3 +1,4 @@
+from functools import partial
 from unittest import TestCase
 
 from core.currency.entities import CashAmount
@@ -6,12 +7,10 @@ from .entities import Snack
 from .exceptions import NegativeSnackQuantityError
 from .repositories import InMemorySnackRepository
 from .services import can_buy_snack, recharge_snack, list_snacks
-from core.utils.functions import currying_repository
-
 
 repository = InMemorySnackRepository()
-list_snacks = currying_repository(list_snacks, repository=repository)
-recharge_snack = currying_repository(recharge_snack, repository=repository)
+list_snacks = partial(list_snacks, repository=repository)
+recharge_snack = partial(recharge_snack, repository=repository)
 
 
 class RechargeSnacksTests(TestCase):
