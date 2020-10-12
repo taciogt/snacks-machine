@@ -2,7 +2,7 @@ from functools import partial
 from unittest import TestCase
 
 from core.currency.entities import Cash, CashAmount
-from core.currency.exceptions import InsufficientCashError
+from core.currency.exceptions import InsufficientCashError, CashForChangeUnavailable
 from core.currency.repositories import InMemoryCashRepository
 from core.currency.services import insert_cash as _insert_cash, retrieve_cash as _retrieve_cash
 from .entities import Snack
@@ -109,19 +109,16 @@ class BuySnacksTests(TestCase):
         self.assertEqual(cash_repository.get_wallet_cash(), CashAmount())
         self.assertEqual(cash_repository.get_cash_available_on_register(), CashAmount(.5, .5, .5, .5))
 
-    # def test_buy_with_insufficient_cash_on_register_for_change(self):
-    #     for _ in range(4):
-    #         insert_cash(cash=Cash(.5))
-    #     insert_cash(cash=Cash(.25))
-    #     insert_cash(cash=Cash(5))
-    #
-    #     change = buy_snack(name=self.snack_a.name)
-    #
-    #     self.assertEqual(change, CashAmount(5, .25))
-    #     snacks_available = list_snacks()
-    #     self.assertEqual(snacks_available, [Snack(name='snack-a',
-    #                                               price=2,
-    #                                               available_quantity=4)])
-    #
-    #     self.assertEqual(cash_repository.get_wallet_cash(), CashAmount())
-    #     self.assertEqual(cash_repository.get_cash_available_on_register(), CashAmount(.5, .5, .5, .5))
+    def test_buy_with_insufficient_cash_on_register_for_change(self):
+        insert_cash(cash=Cash(5))
+        cash_repository.insert_cash_on_register(cash_amount=CashAmount(.25, .5))
+
+        self.assertRaises(CashForChangeUnavailable, buy_snack, name=self.snack_a.name)
+
+        snacks_available = list_snacks()
+        self.assertEqual(snacks_available, [Snack(name='snack-a',
+                                                  price=2,
+                                                  available_quantity=5)])
+
+        self.assertEqual(cash_repository.get_wallet_cash(), CashAmount(5))
+        self.assertEqual(cash_repository.get_cash_available_on_register(), CashAmount(.25, .5))

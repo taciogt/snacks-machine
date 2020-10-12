@@ -16,3 +16,7 @@ class NegativeCashAmountError(Exception):
 class InvalidCashValueError(Exception):
     def __init__(self, invalid_value, valid_values):
         super().__init__(f'Cash value is {invalid_value} and should be one of {valid_values}')
+
+
+class CashForChangeUnavailable(Exception):
+    pass
