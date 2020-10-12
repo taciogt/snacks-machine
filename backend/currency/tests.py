@@ -44,7 +44,7 @@ class RetrieveCashEndpointTests(TestCase):
     def setUp(self) -> None:
         super().setUp()
         self.client = Client()
-        repository.retrieve_cash()
+        repository.retrieve_wallet_cash()
 
     def test_retrieve_cash(self):
         repository.insert_cash(cash=Cash(2))

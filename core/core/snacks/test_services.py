@@ -1,16 +1,24 @@
 from functools import partial
 from unittest import TestCase
 
-from core.currency.entities import CashAmount
+from core.currency.entities import Cash, CashAmount
+from core.currency.services import insert_cash as _insert_cash, retrieve_cash as _retrieve_cash
+from core.currency.repositories import InMemoryCashRepository
 from core.currency.exceptions import InsufficientCashError
 from .entities import Snack
 from .exceptions import NegativeSnackQuantityError, SnackNotFound
 from .repositories import InMemorySnackRepository
-from .services import can_buy_snack, recharge_snack, list_snacks
+from .services import can_buy_snack, recharge_snack as _recharge_snack, list_snacks as _list_snacks, \
+    buy_snack as _buy_snack
+
+cash_repository = InMemoryCashRepository()
+insert_cash = partial(_insert_cash, repository=cash_repository)
+retrieve_cash = partial(_retrieve_cash, repository=cash_repository)
 
 repository = InMemorySnackRepository()
-list_snacks = partial(list_snacks, repository=repository)
-recharge_snack = partial(recharge_snack, repository=repository)
+list_snacks = partial(_list_snacks, repository=repository)
+recharge_snack = partial(_recharge_snack, repository=repository)
+buy_snack = partial(_buy_snack, repository=repository, cash_repository=cash_repository)
 
 
 class RechargeSnacksTests(TestCase):
@@ -45,14 +53,19 @@ class RechargeSnacksTests(TestCase):
 class BuySnacksTests(TestCase):
     snack: Snack
 
-    @classmethod
-    def setUpClass(cls) -> None:
+    def setUp(self) -> None:
         super().setUpClass()
-        cls.snack = Snack(name='_', price=1.5)
+        repository.clear_snacks()
 
-    def test_can_buy_with_exact_amount(self):
-        buying_money = CashAmount(1.5)
-        self.assertTrue(can_buy_snack(snack=self.snack, cash_amount=buying_money))
+        self.snack = Snack(name='_', price=1.5)
+
+        self.snack_a = Snack(name='snack-a', price=2)
+        repository.create_snack(self.snack_a)
+        repository.recharge_snack(name=self.snack_a.name, quantity=5)
+
+    # def test_can_buy_with_exact_amount(self):
+    #     buying_money = CashAmount(1.5)
+    #     self.assertTrue(can_buy_snack(snack=self.snack, cash_amount=buying_money))
 
     def test_can_buy_with_insufficient_cash(self):
         buying_money = CashAmount(1)
@@ -62,3 +75,16 @@ class BuySnacksTests(TestCase):
     def test_can_buy_with_surplus_cash(self):
         buying_money = CashAmount(2)
         self.assertTrue(can_buy_snack(snack=self.snack, cash_amount=buying_money))
+
+    def test_buy_with_exact_amount(self):
+        insert_cash(cash=Cash(2))
+
+        change = buy_snack(name=self.snack_a.name)
+        self.assertEqual(change, CashAmount())
+        snacks_available = list_snacks()
+        self.assertEqual(snacks_available, [Snack(name='snack-a',
+                                                  price=2,
+                                                  available_quantity=4)])
+
+        self.assertEqual(cash_repository.get_wallet_cash(), CashAmount())
+        self.assertEqual(cash_repository.get_cash_available_on_register(), CashAmount(2))

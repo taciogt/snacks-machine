@@ -19,28 +19,48 @@ class CashRepository(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    def get_inserted_cash(cls) -> CashAmount:
+    def get_wallet_cash(cls) -> CashAmount:
         ...
 
     @classmethod
     @abstractmethod
-    def retrieve_cash(cls) -> CashAmount:
+    def retrieve_wallet_cash(cls) -> CashAmount:
+        ...
+
+    @classmethod
+    @abstractmethod
+    def get_cash_available_on_register(cls) -> CashAmount:
+        ...
+
+    @classmethod
+    @abstractmethod
+    def insert_cash_on_register(cls, cash_amount: CashAmount) -> None:
         ...
 
 
 class InMemoryCashRepository(CashRepository):
     _inserted_cash_amount = CashAmount()
+    _cash_register = CashAmount()
 
     @classmethod
     def _insert_cash(cls, cash: Cash):
         cls._inserted_cash_amount += cash
 
     @classmethod
-    def get_inserted_cash(cls) -> CashAmount:
+    def get_wallet_cash(cls) -> CashAmount:
         return cls._inserted_cash_amount
 
     @classmethod
-    def retrieve_cash(cls) -> CashAmount:
+    def retrieve_wallet_cash(cls) -> CashAmount:
         cash_to_retrieve = cls._inserted_cash_amount
         cls._inserted_cash_amount = CashAmount()
         return cash_to_retrieve
+
+    @classmethod
+    def get_cash_available_on_register(cls) -> CashAmount:
+        return cls._cash_register
+
+    @classmethod
+    def insert_cash_on_register(cls, cash_amount: CashAmount) -> None:
+        cls._cash_register += cash_amount
+

@@ -8,6 +8,11 @@ from core.snacks.exceptions import SnackNotFound
 
 
 class DatabaseRepository(SnackRepository):
+
+    @classmethod
+    def get_snack(cls, name: str) -> Snack:
+        pass
+
     @classmethod
     def clear_snacks(cls) -> None:
         SnackModel.objects.all().delete()
@@ -33,3 +38,7 @@ class DatabaseRepository(SnackRepository):
     def list_snacks(cls) -> List[Snack]:
         snacks = SnackModel.objects.all()
         return [Snack(**snack.as_dict()) for snack in snacks]
+
+    @classmethod
+    def remove_snack(cls, name: str, quantity: int) -> None:
+        pass

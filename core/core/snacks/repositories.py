@@ -13,8 +13,14 @@ class SnackRepository(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
+    def get_snack(cls, name: str) -> Snack:
+        ...
+
+    @classmethod
+    @abstractmethod
     def create_snack(cls, snack: Snack) -> Snack:
         ...
+
 
     @classmethod
     @abstractmethod
@@ -26,9 +32,21 @@ class SnackRepository(metaclass=ABCMeta):
     def clear_snacks(cls) -> None:
         ...
 
+    @classmethod
+    @abstractmethod
+    def remove_snack(cls, snack: Snack, quantity: int) -> None:
+        ...
+
 
 class InMemorySnackRepository(SnackRepository):
     snacks: List[Snack] = list()
+
+    @classmethod
+    def get_snack(cls, name: str) -> Snack:
+        try:
+            return next(snack for snack in cls.snacks if snack.name == name)
+        except StopIteration:
+            raise SnackNotFound(name=name)
 
     @classmethod
     def list_snacks(cls) -> List[Snack]:
@@ -41,13 +59,15 @@ class InMemorySnackRepository(SnackRepository):
 
     @classmethod
     def recharge_snack(cls, name: str, quantity: int) -> Snack:
-        try:
-            snack = next(snack for snack in cls.snacks if snack.name == name)
-        except StopIteration:
-            raise SnackNotFound(name=name)
+        snack = cls.get_snack(name=name)
         snack.available_quantity += quantity
         return snack
 
     @classmethod
     def clear_snacks(cls):
         cls.snacks = list()
+
+    @classmethod
+    def remove_snack(cls, snack: Snack, quantity: int) -> None:
+        snack = cls.get_snack(name=snack.name)
+        snack.available_quantity -= quantity

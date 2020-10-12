@@ -67,4 +67,5 @@ class CashAmount:
     __repr__ = __str__
 
     def __eq__(self, other):
-        return self._cash_items == other._cash_items
+        return isinstance(other, CashAmount) and \
+               self._cash_items == other._cash_items

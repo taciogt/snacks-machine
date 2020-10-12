@@ -11,7 +11,7 @@ class InsertCashTests(TestCase):
 
     def test_insert_valid_cash(self):
         insert_cash(Cash(2), repository=self.repository)
-        inserted_amount = self.repository.get_inserted_cash()
+        inserted_amount = self.repository.get_wallet_cash()
         self.assertEqual(inserted_amount, CashAmount(2))
 
     def test_insert_invalid_cash(self):
@@ -25,17 +25,17 @@ class RetrieveCashTests(TestCase):
 
     def setUp(self) -> None:
         super().setUp()
-        self.repository.retrieve_cash()
+        self.repository.retrieve_wallet_cash()
 
     def test_retrieve_cash(self):
         self.repository.insert_cash(cash=Cash(2))
-        self.assertEqual(self.repository.retrieve_cash(), CashAmount(2))
-        self.assertEqual(self.repository.get_inserted_cash(), CashAmount())
+        self.assertEqual(self.repository.retrieve_wallet_cash(), CashAmount(2))
+        self.assertEqual(self.repository.get_wallet_cash(), CashAmount())
 
         self.repository.insert_cash(cash=Cash(2))
         self.repository.insert_cash(cash=Cash(5))
-        self.assertEqual(self.repository.retrieve_cash(), CashAmount(5, 2))
-        self.assertEqual(self.repository.get_inserted_cash(), CashAmount())
+        self.assertEqual(self.repository.retrieve_wallet_cash(), CashAmount(5, 2))
+        self.assertEqual(self.repository.get_wallet_cash(), CashAmount())
 
 
 class CalculateChangeTests(TestCase):
