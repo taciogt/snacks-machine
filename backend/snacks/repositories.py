@@ -12,7 +12,8 @@ class DatabaseRepository(SnackRepository):
     @classmethod
     def _get_snack_model(cls, name: str) -> SnackModel:
         try:
-            return SnackModel.objects.get(name=name)
+            snack_model: SnackModel = SnackModel.objects.get(name=name)
+            return snack_model
         except SnackModel.DoesNotExist:
             raise SnackNotFound(name=name)
 
