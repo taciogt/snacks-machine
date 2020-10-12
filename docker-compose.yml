@@ -1,0 +1,12 @@
+version: "3"
+services:
+  backend:
+    container_name: "snacks_machine-backend"
+    build: .
+    working_dir: /app
+    command: ["./run_development_server.sh"]
+    volumes:
+      - ./backend:/app
+      - ./core/core:/app/core
+    ports:
+      - 80:8000
