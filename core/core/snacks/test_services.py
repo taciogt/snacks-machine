@@ -94,7 +94,7 @@ class BuySnacksTests(TestCase):
     def test_buy_with_insufficient_cash(self):
         insert_cash(cash=Cash(.5))
 
-        self.assertRaisesRegex(InsufficientCashError, 'Insufficient cash. Provided: R\$ 0.50. Required: R\$ 2.00',
+        self.assertRaisesRegex(InsufficientCashError, r'Insufficient cash. Provided: R\$ 0.50. Required: R\$ 2.00',
                                buy_snack, name=self.snack_a.name)
 
         snacks_available = list_snacks()

@@ -74,6 +74,3 @@ class InMemoryCashRepository(CashRepository):
         cash_to_retrieve = cls._cash_register
         cls._cash_register = CashAmount()
         return cash_to_retrieve
-
-
-

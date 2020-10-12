@@ -21,7 +21,6 @@ class SnackRepository(metaclass=ABCMeta):
     def create_snack(cls, snack: Snack) -> Snack:
         ...
 
-
     @classmethod
     @abstractmethod
     def recharge_snack(cls, name: str, quantity: int) -> Snack:

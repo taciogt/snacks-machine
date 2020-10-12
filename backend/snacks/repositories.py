@@ -40,5 +40,5 @@ class DatabaseRepository(SnackRepository):
         return [Snack(**snack.as_dict()) for snack in snacks]
 
     @classmethod
-    def remove_snack(cls, name: str, quantity: int) -> None:
+    def remove_snack(cls, snack: Snack, quantity: int) -> None:
         pass
