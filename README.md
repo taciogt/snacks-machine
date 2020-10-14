@@ -6,6 +6,37 @@
 
 Máquina de Salgadinhos.
 
+## Como executar a aplicação
+
+A única dependência para executar a aplicação é o [Docker Compose](https://docs.docker.com/compose/install/).
+
+Com o Docker Compose, para executar a aplicação execute o seguinte comando dentro da raiz do projeto:
+
+```shell script
+docker-compose up
+```
+
+A API da aplicação estará disponível em `localhost:80`
+
+### Setup
+
+Para fazer o setup da aplicação criando alguns salgadinhos, será necessário configurar o acesso ao ambiente admin da aplicação. Para isso, crie um super usuário através do script `backend/create_superuser.sh`. 
+
+Com o super usuário criado, execute a aplicação e entre no ambiente admin em `localhost/admin`. Através dessa interface crie quantos salgadinhos julgar necessário, definindo seus preços e quantidade disponíveis em estoque.
+
+### Ambiente de desenvolvimento
+
+É possível desenvolver a aplicação utilizando apenas containers Docker, mas para ser mais eficiente é possível configurar o Python nativo na máquina de forma simples:
+
+Para isso, instale o [pyenv](https://github.com/pyenv/pyenv#installation) e o [pipenv](https://pipenv.pypa.io/en/latest/#install-pipenv-today).
+
+Com essas ferramentas instaladas, execute: 
+```
+pipenv sync  # instala a versão do Python necessária para o projeto, cria um virtualenv com essa versão e instala as dependências necessárias
+pipenv shell  # inicia um novo terminal com o virtualenv do projeto ativado
+```
+
+
 ## Decisões de Arquitetura
 
 ### Desenho geral
@@ -109,6 +140,8 @@ Observação: A camada de persistência atual (em memória ou no dentro próprio
   * Além disso, tranformar cada objeto `Cash(2), Cash(.5), ...` em um Singleton correspondente a cada valor.
   
 * O banco de dados utilizado pelo backend é um SQLite. Pode-se utilizar o MySQL caso seja necessário um banco de dados em produção. Utilizando docker compose é possível testar essa solução sem adicionar nenhuma dificuldade ao setup do ambiente de desenvolvimento.
+
+* Implementar migrations para popular a base de dados com alguns salgadinhos.
 
 
 ## Requisitos ainda não atendidos

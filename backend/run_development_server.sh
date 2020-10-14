@@ -1,6 +1,4 @@
 #!/usr/bin/env sh
 
-#pwd
-#ls
-
-python manage.py runserver
+python manage.py migrate
+python manage.py runserver 0.0.0.0:8000
