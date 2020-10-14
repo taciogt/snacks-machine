@@ -16,7 +16,7 @@ Com o Docker Compose instalado através do link acima, execute o seguinte comand
 docker-compose up
 ```
 
-A API da aplicação estará disponível em [localhost:80]()
+A API da aplicação estará disponível em `localhost:80`
 
 ### Setup
 
