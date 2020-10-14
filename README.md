@@ -10,13 +10,13 @@ Máquina de Salgadinhos.
 
 A única dependência para executar a aplicação é o [Docker Compose](https://docs.docker.com/compose/install/).
 
-Com o Docker Compose, para executar a aplicação execute o seguinte comando dentro da raiz do projeto:
+Com o Docker Compose instalado através do link acima, execute o seguinte comando dentro da raiz do projeto:
 
 ```shell script
 docker-compose up
 ```
 
-A API da aplicação estará disponível em `localhost:80`
+A API da aplicação estará disponível em [localhost:80]()
 
 ### Setup
 
